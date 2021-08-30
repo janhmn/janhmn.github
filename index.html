@@ -1,0 +1,25 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<title>My Chart.js Chart</title></head>
+<body><div class="container"><canvas id="myChart"></canvas></div>
+<script>
+let myChart = document.getElementById('myChart').getContext('2d');
+Chart.defaults.global.defaultFontFamily = 'Lato'; Chart.defaults.global.defaultFontSize = 18;Chart.defaults.global.defaultFontColor = '#777';
+let BeerPongChart = new Chart(myChart, {type: 'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+data: { labels:
+['Jannik ' + Math.round(3 / 10 * 100)  + '%',
+'Philip ' + Math.round(2 / 10 * 100)  + '%',
+'Lisa ' + Math.round(7 / 10 * 100) + '%',
+'Jan ' + Math.round(8 / 10 * 100) + '%', 'Games Played'],
+datasets: [{label: 'Wins', data: [ 3, 2, 7,8,10],
+backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)','rgba(153, 102, 255, 0.6)'],
+borderWidth: 1,borderColor: '#777',hoverBorderWidth: 3,hoverBorderColor: '#000'}]
+}, options: { scales: { yAxes: [{ display: true,ticks: {beginAtZero: true,max: 10 } } ]  },
+title: { display: true,text: 'Bierpong Stats', fontSize: 25  },
+legend: {display: false,  position: 'right', labels: {  fontColor: '#000', } },
+layout: { padding: { left: 50,  right: 0,bottom: 0, top: 0  }  },
+tooltips: { enabled: true }}});</script></body></html>
