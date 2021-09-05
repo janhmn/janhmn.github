@@ -28,7 +28,7 @@ async function main(){
 
         //set up output stream
         var fs = require('fs');
-        var toBeWrittenName = "createChart.js";   //TODO
+        var toBeWrittenName = "createChart.js";  
         var stream = fs.createWriteStream(toBeWrittenName);
 
         stream.once('open', function(fd){
@@ -71,7 +71,7 @@ function buildScript(jannikWins, philipWins, lisaWins, janWins, Games){
     result += "\nvar data = new google.visualization.DataTable();data.addColumn('string', 'Name');data.addColumn('number', 'Wins');";
     result += "\ndata.addRows([['Jan', "+ janWins + "],['Lisa', "+ lisaWins + "],['Jannik',"+ jannikWins + "], ['Philip', "+ philipWins + "],['Spiele'," + Games + "] ]);";
     result += "\n";
-    result += "\nvar options = {'title':'Anzahl Siege pro Spieler','width':400,'height':300};";
+    result += "\nvar options = {'title':'Anzahl Siege pro Spieler','width':500,'height':300};";
     result += "\n";
     result += "\nvar chart = new google.visualization.BarChart(document.getElementById('chart_div')); chart.draw(data, options);}";
     return result;
