@@ -53,7 +53,7 @@ function buildHtml(data) {
     body += '\n<tr><th>Platz</th><th>Spieler</th><th>Siege</th><th>Spiele</th> <th>Quote</th></tr>';
     data.forEach(doc => {
         count++;
-        body += "\n <tr> <td>" + count + ".</td><td>" + doc["name"] + "</td><td>" + doc["wins"] + "</td> <td>" + doc["games"] + "</td><td>" + (doc["wins"]/doc["games"]) *100 + "%</td> </tr>";
+        body += "\n <tr> <td>" + count + ".</td><td>" + doc["name"] + "</td><td>" + doc["wins"] + "</td> <td>" + doc["games"] + "</td><td>" + Math.round((doc["wins"]/doc["games"]) *100) + "%</td> </tr>";
     })
     body += '\n</table>';
     body += '\n</div><div id="chart_div"> </div></div>';
