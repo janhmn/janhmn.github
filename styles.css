@@ -1,0 +1,40 @@
+h1{
+    color: black;
+    font-size: large;
+    font-family: 'Gill Sans', sans-serif;
+    padding: 10px;
+    text-align: center;
+}
+
+.grid-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    -ms-grid-column-align: center;
+    padding: 10px;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th{
+      height: 50px;
+      text-align: left;
+      border-bottom: 1px solid black;
+      border-collapse: collapse;
+      padding: 5px;
+      background-color: blue;
+      color: white;
+  }
+
+  td{
+      border-collapse: collapse;
+      border-bottom: 1px solid black;
+      padding: 5px;
+  }
+
+  tr:hover{background-color: blue;}
+  tr:nth-child(even) {background-color: #f2f2f2;}
+
