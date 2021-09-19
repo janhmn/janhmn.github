@@ -1,10 +1,5 @@
 const { MongoClient } = require('mongodb');
 
-var jannikGames;
-var philipGames;
-var lisaGames;
-var janGames;
-
 var janWins;
 var jannikWins;
 var lisaWins;
