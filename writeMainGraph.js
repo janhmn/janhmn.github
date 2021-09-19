@@ -1,11 +1,16 @@
 const { MongoClient } = require('mongodb');
-var jannikWins;
-var philipWins;
-var lisaWins;
-var janWins;
-var Games;
 
-async function main(){
+var jannikGames;
+var philipGames;
+var lisaGames;
+var janGames;
+
+var janWins;
+var jannikWins;
+var lisaWins;
+var philipGames;
+
+async function main() {
     const uri = "mongodb+srv://admin:1234@beerpongcluster.ucpzs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
     const client = new MongoClient(uri);
 
@@ -14,9 +19,9 @@ async function main(){
         await client.connect();
 
         //load all player data
-        const loadedJannik = await loadPlayerByName(client,"Jannik");
-        const loadedLisa = await loadPlayerByName(client,"Lisa");
-        const loadedPhilip = await loadPlayerByName(client,"Philip");
+        const loadedJannik = await loadPlayerByName(client, "Jannik");
+        const loadedLisa = await loadPlayerByName(client, "Lisa");
+        const loadedPhilip = await loadPlayerByName(client, "Philip");
         const loadedJan = await loadPlayerByName(client, "Jan");
 
         //extract graph information
@@ -24,15 +29,16 @@ async function main(){
         philipWins = loadedPhilip["wins"];
         lisaWins = loadedLisa["wins"];
         janWins = loadedJan["wins"];
-        Games = loadedJan["games"];
+
+        console.log(loadedJannik["games"]);
 
         //set up output stream
         var fs = require('fs');
-        var toBeWrittenName = "createChart.js";  
+        var toBeWrittenName = "createChart.js";
         var stream = fs.createWriteStream(toBeWrittenName);
 
-        stream.once('open', function(fd){
-            var script = buildScript(jannikWins,philipWins,lisaWins,janWins,Games);
+        stream.once('open', function (fd) {
+            var script = buildScript(jannikWins, philipWins, lisaWins, janWins);
 
             stream.end(script);
         });
@@ -50,9 +56,9 @@ async function main(){
 
 main().catch(console.error);
 
-async function loadPlayerByName(client,name){
-    const result = await client.db("beerStatistic").collection("Players").findOne({name : name});
-    if(result){
+async function loadPlayerByName(client, name) {
+    const result = await client.db("beerStatistic").collection("Players").findOne({ name: name });
+    if (result) {
         console.log('Found ' + name + ' in database');
     } else {
         console.log('Did not find' + name);
@@ -60,7 +66,7 @@ async function loadPlayerByName(client,name){
     return result;
 }
 
-function buildScript(jannikWins, philipWins, lisaWins, janWins, Games){
+function buildScript(jannikWins, philipWins, lisaWins, janWins) {
     var result = "";
     result += "google.charts.load('current', {'packages':['corechart']});";
     result += "\n";
@@ -69,7 +75,7 @@ function buildScript(jannikWins, philipWins, lisaWins, janWins, Games){
     result += "\nfunction drawChart() {";
     result += "\n";
     result += "\nvar data = new google.visualization.DataTable();data.addColumn('string', 'Name');data.addColumn('number', 'Wins');";
-    result += "\ndata.addRows([['Jan', "+ janWins + "],['Lisa', "+ lisaWins + "],['Jannik',"+ jannikWins + "], ['Philip', "+ philipWins + "],['Spiele'," + Games + "] ]);";
+    result += "\ndata.addRows([['Jan', " + janWins + "],['Lisa', " + lisaWins + "],['Jannik'," + jannikWins + "], ['Philip', " + philipWins + "]]);";
     result += "\n";
     result += "\nvar options = {'title':'Anzahl Siege pro Spieler','width':500,'height':300};";
     result += "\n";
