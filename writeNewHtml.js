@@ -9,15 +9,21 @@ async function main() {
         // Connect to the MongoDB cluster
         await client.connect();
 
-        const cursor = await client.db("beerStatistic").collection("Players").find().sort({ wins: -1 });
-        const data = await cursor.toArray();
+        const playerCursor = await client.db("beerStatistic").collection("Players").find().sort({ wins: -1 });
+        const playerData = await playerCursor.toArray();
+
+        const gamesCursor = await client.db("beerStatistic").collection("Games").find();
+        const gamesData = await gamesCursor.toArray();
+
+        var maximumStreak = await calculateStreak(playerData, gamesData);
+
 
         var fs = require('fs');
         var toBeWrittenName = "index.html";
         var stream = fs.createWriteStream(toBeWrittenName);
 
         stream.once('open', function (fd) {
-            var html = buildHtml(data);
+            var html = buildHtml(playerData, maximumStreak);
 
             stream.end(html);
         });
@@ -35,7 +41,7 @@ async function main() {
 main().catch(console.error);
 
 
-function buildHtml(data) {
+function buildHtml(data, maximumStreak) {
     var count = 0;
 
     //create the header in new HTML document
@@ -53,11 +59,15 @@ function buildHtml(data) {
     body += '\n<tr><th>Platz</th><th>Spieler</th><th>Siege</th><th>Spiele</th> <th>Quote</th></tr>';
     data.forEach(doc => {
         count++;
-        body += "\n <tr> <td>" + count + ".</td><td>" + doc["name"] + "</td><td>" + doc["wins"] + "</td> <td>" + doc["games"] + "</td><td>" + Math.round((doc["wins"]/doc["games"]) *100) + "%</td> </tr>";
+        body += "\n <tr> <td>" + count + ".</td><td>" + doc["name"] + "</td><td>" + doc["wins"] + "</td> <td>" + doc["games"] + "</td><td>" + Math.round((doc["wins"] / doc["games"]) * 100) + "%</td> </tr>";
     })
     body += '\n</table>';
     body += '\n</div><div id="chart_div"> </div></div>';
 
+    //add the streak section
+    body += '\n<div class="grid-container">';
+    body += '\n<div class="streak"><label class="fire">On fire!</label>';
+    body += '\n<p class="content">' + maximumStreak['name'] + ' has the longest Streak with ' + maximumStreak['streak'] + ' wins in a row.</p></div>';
 
 
     // concatenate header string
@@ -67,4 +77,47 @@ function buildHtml(data) {
         + '<html><head>' + header + '</head>' + '\n' + '<body>' + body + '</body></html>';
 };
 
+async function calculateStreak(playerData, gameData) {
+    var name = '';
+    var streak = 0;
+    playerData.forEach(player => {
+        value = getStreakByName(player['name'] , gameData)
+        if(value > streak){
+            streak = value;
+            name = player['name'];
+        }
+    });
+
+    return {
+        'name' : name,
+        'streak': streak
+    };
+}
+
+function getStreakByName(name, data) {
+    var counter = 0;
+    var maxStreak = 0;
+
+    data.forEach(element => {
+        winners = element['winners'];
+        loosers = element['loosers'];
+
+        //increment counter when player is in wins
+        if (winners[0] == name || winners[1] == name) {
+            counter++;
+        }
+
+        //reset counter if player lost + save value
+        if (loosers[0] == name || loosers[1] == name) {
+            if (counter >= maxStreak) {
+                maxStreak = counter;
+                counter = 0;
+            } else {
+                counter = 0;
+            }
+        }
+    });
+
+    return maxStreak;
+}
 
