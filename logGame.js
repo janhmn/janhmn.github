@@ -36,8 +36,8 @@ async function main() {
 
         await updatePlayerData(client, namePlayer1, { wins: player1data["wins"] + 1, games: player1data["games"] + 1 });
         await updatePlayerData(client, namePlayer2, { wins: player2data["wins"] + 1, games: player2data["games"] + 1 });
-        await updatePlayerData(client, namePlayer3, { games: player1data["games"] + 1 });
-        await updatePlayerData(client, namePlayer4, { games: player1data["games"] + 1 });
+        await updatePlayerData(client, namePlayer3, { games: player3data["games"] + 1 });
+        await updatePlayerData(client, namePlayer4, { games: player4data["games"] + 1 });
 
     } catch (error) {
         console.log(error);
