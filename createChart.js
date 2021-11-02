@@ -5,7 +5,7 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
 
 var data = new google.visualization.DataTable();data.addColumn('string', 'Name');data.addColumn('number', 'Wins');
-data.addRows([['Jan', 10],['Lisa', 12],['Jannik',4], ['Philip', 5]]);
+data.addRows([['Jan', 10],['Lisa', 12],['Jannik',5], ['Philip', 6]]);
 
 var options = {'title':'Anzahl Siege pro Spieler','width':500,'height':300};
 
